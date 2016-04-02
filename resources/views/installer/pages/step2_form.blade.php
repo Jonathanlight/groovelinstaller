@@ -46,10 +46,8 @@ $(document).ready(function() {
 		        
 		        },
 		        error : function(resultat, statut, erreur){
-		        	$('#msg_wait').attr("style","display:none");
+			    	$('#msg_wait').attr("style","display:none");
 		        	$('#msg_error').attr("style","display:block");
-		        
-				
 		        }
 		  })
     }
@@ -64,12 +62,11 @@ $(document).ready(function() {
 		        	for(var i=0; i<code_html['data'].length;i++){
 		        		$("#log").append(code_html['data'][i]);
 		        	}
-		        	if(code_html['status']=='started'){
-		        		getLog();	
-			        }else if(code_html['status']=='finished'){
-						$('#msg_success').attr("style","display:block");
+		            if(code_html['status']=='finished'){
+		   			$('#msg_success').attr("style","display:block");
 						$('#button_next').attr("style","display:block;width:100px;height:50px");
 						$('#msg_wait').attr("style","display:none");
+						return;
 				    }
 
 		        },
@@ -81,7 +78,37 @@ $(document).ready(function() {
 		  })
 	}
 
-	startInstall();  
+	var interval = setInterval(function()
+			{   
+				$.ajax({
+			        url: '/install/logs/reader',
+			        dataType: 'json',
+			        type:'GET',
+			        success : function(code_html, statut){ 
+				        //console.log(code_html);
+			        	for(var i=0; i<code_html['data'].length;i++){
+			        		$("#log").append(code_html['data'][i]);
+			        	}
+			            if(code_html['status']=='finished'){
+			           	$('#msg_success').attr("style","display:block");
+							$('#button_next').attr("style","display:block;width:100px;height:50px");
+							$('#msg_wait').attr("style","display:none");
+							clearInterval(interval);
+					    }
+		
+			        },
+			        error : function(resultat, statut, erreur){
+			        	$('#msg_wait').attr("style","display:none");
+			        	$('#msg_error').attr("style","display:block");
+		
+			        }
+			  })
+			},10000);
+
+
+
+	
+	startInstall(); 
 	getLog();
 });
 

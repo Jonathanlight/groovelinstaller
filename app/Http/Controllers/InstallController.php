@@ -1,5 +1,20 @@
 <?php
 
+/**********************************************************************/
+/*This file is part of Groovel.                                       */
+/*Groovel is free software: you can redistribute it and/or modify     */
+/*it under the terms of the GNU General Public License as published by*/
+/*the Free Software Foundation, either version 2 of the License, or   */
+/*(at your option) any later version.                                 */
+/*Groovel is distributed in the hope that it will be useful,          */
+/*but WITHOUT ANY WARRANTY; without even the implied warranty of      */
+/*MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the       */
+/*GNU General Public License for more details.                        */
+/*You should have received a copy of the GNU General Public License   */
+/*along with Groovel.  If not, see <http://www.gnu.org/licenses/>.    */
+/**********************************************************************/
+
+
 namespace App\Http\Controllers;
 
 use Log;
@@ -24,10 +39,26 @@ class InstallController extends Controller
 		if($request->is('install/step1')){
 			self::$logs_line=0;
 			self::$status_install="started";
-			$validator=$this->validate($request, [
-					'projectname' => 'required',
-					'pathinstall' => 'required'
-			]);
+			$validation = \Validator::make($request->all(),array('projectname' => 'required','pathinstall' => 'required'));
+			if($validation->fails()){
+				$messages=$validation->messages();
+				$formatMess=null;
+				foreach ($messages->all() as $message)
+				{
+					$formatMess=$message.'- '.$formatMess;
+				}
+				return response()->json(['status' =>"failed",'errors'=>$formatMess ]);
+			}
+			if(!$this->checkPathProjectExist($request->get('pathinstall'))){
+				$validation->getMessageBag()->add('Path', 'path does not exist');
+				$messages=$validation->messages();
+				$formatMess=null;
+				foreach ($messages->all() as $message)
+				{
+					$formatMess=$message.'- '.$formatMess;
+				}
+				return response()->json(['status' =>"failed",'errors'=>$formatMess ]);
+			}
 			Cache::forever("projectname",$request->get('projectname'));
 			Cache::forever("pathinstall",$request->get('pathinstall'));
 			Cache::forever("status_install","started");
@@ -38,13 +69,15 @@ class InstallController extends Controller
 			Cache::forget("portdb");
 			Cache::forget("userdb");
 			Cache::forget("passworddb");
-			
-			return redirect('install/step2');
+			return response()->json(['status' =>"success"]);
+			//return redirect('install/step2');
 		}
 		if($request->is('install/step3')){
 			Log::info('start project');
-			Cache::forever("status_install","finished");
 			$this->createProject(Cache::get('projectname'),Cache::get('pathinstall'));
+			Cache::forever("status_install","finished");
+			return response()->json(['status' => 'finished']);
+			
 		}
 		if($request->is('install/logs/reader')){
 			$res=$this->logReader();
@@ -52,12 +85,17 @@ class InstallController extends Controller
 		}
 		if($request->is('install/step5')){
 			Log::info('mysql settings');
-			$validator=$this->validate($request, [
-					'host' => 'required',
-					'port' => 'required',
-					'databasename' => 'required',
-					'username' => 'required'
-			]);
+			
+			$validation = \Validator::make($request->all(),array('host' => 'required','port' => 'required','databasename' => 'required','username' => 'required'));
+			if($validation->fails()){
+				$messages=$validation->messages();
+				$formatMess=null;
+				foreach ($messages->all() as $message)
+				{
+					$formatMess=$message.'- '.$formatMess;
+				}
+				return response()->json(['status' =>"failed",'statusval' =>"failed",'errors'=>$formatMess ]);
+			}
 			
 			Cache::forever("hostdb",$request->get('host'));
 			Cache::forever("portdb",$request->get('port'));
@@ -87,12 +125,17 @@ class InstallController extends Controller
 		
 		if($request->is('install/step7')){//create account
 			Log::info("create user");
-			$validator=$this->validate($request, [
-					'username' => 'required',
-					'pseudo' => 'required',
-					'email' => 'required',
-					'password' => 'required'
-			]);
+			$validation = \Validator::make($request->all(),array('username' => 'required','pseudo' => 'required','email' => 'required','password' => 'required'));
+			if($validation->fails()){
+				$messages=$validation->messages();
+				$formatMess=null;
+				foreach ($messages->all() as $message)
+				{
+					$formatMess=$message.'- '.$formatMess;
+				}
+				return response()->json(['statusval' =>"failed",'errors'=>$formatMess ]);
+			}
+			
 			$this->createAccount($request->get('username'), $request->get('pseudo'), $request->get('email'), $request->get('password'));
 			return response()->json(['status' =>"success"]);
 		}
@@ -106,6 +149,14 @@ class InstallController extends Controller
 	}
 	
 	
+	private function checkPathProjectExist($folder){
+		// Get canonicalized absolute pathname
+		$path = realpath($folder);
+		
+		// If it exist, check if it's a directory
+		return ($path !== false AND is_dir($path)) ? true : false;
+	}
+	
 	private function publish($projectName){
 		$present_dir = explode('\\', getcwd());
 		$tmp_dir=null;
@@ -116,11 +167,12 @@ class InstallController extends Controller
 			$tmp_dir=$present_dir[0].'/tmp';
 		}
 		
-		Log::info($tmp_dir.'/'.$projectName);
+		//Log::info($tmp_dir.'/'.$projectName);
 		chdir($tmp_dir.'/'.$projectName);
 		ini_set ('max_execution_time', 0);
 		Log::info("call publish");
 		exec("php artisan vendor:publish",$resultLines);
+		Log::info("publish done");
 		Foreach($resultLines as $resultLine){
 	         Log::info($resultLine);
 	     }
