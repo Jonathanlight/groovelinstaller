@@ -70,7 +70,6 @@ class InstallController extends Controller
 			Cache::forget("userdb");
 			Cache::forget("passworddb");
 			return response()->json(['status' =>"success"]);
-			//return redirect('install/step2');
 		}
 		if($request->is('install/step3')){
 			Log::info('start project');
@@ -171,11 +170,11 @@ class InstallController extends Controller
 		chdir($tmp_dir.'/'.$projectName);
 		ini_set ('max_execution_time', 0);
 		Log::info("call publish");
-		exec("php artisan vendor:publish",$resultLines);
+		$this->copy_directory($tmp_dir.'/'.$projectName.'/vendor/groovel/cmsgroovel/views',$tmp_dir.'/'.$projectName.'/resources/views/cmsgroovel');
+		$this->copy_directory($tmp_dir.'/'.$projectName.'/vendor/groovel/cmsgroovel/public/groovel',$tmp_dir.'/'.$projectName.'/public/groovel');
+		$this->copy_directory($tmp_dir.'/'.$projectName.'/vendor/groovel/cmsgroovel/public/images',$tmp_dir.'/'.$projectName.'/public/images');
+		$this->copy_directory($tmp_dir.'/'.$projectName.'/vendor/groovel/cmsgroovel/starter-templates',$tmp_dir.'/'.$projectName.'/starter-templates');
 		Log::info("publish done");
-		Foreach($resultLines as $resultLine){
-	         Log::info($resultLine);
-	     }
 	}
 	
 	private function copy_directory( $source, $destination ) {
@@ -209,10 +208,7 @@ class InstallController extends Controller
 		}else{//win
 			$tmp_dir=$present_dir[0].'/tmp';
 		}
-		$this->copy_directory($tmp_dir.'/'.$projectname,$pathinstall);
-		/*if (!copy( $tmp_dir.'/'.$projectname, $pathinstall)) {
-			Log::error("project copy failed");
-		}*/
+		$this->copy_directory($tmp_dir.'/'.$projectname,$pathinstall.'/'.$projectname);
 	}
 	
 	private function createAccount($username,$pseudo,$email,$password){
