@@ -17,7 +17,7 @@
 	<div class="col-sm-10 col-sm-offset-1 main">
 		<div class="row">
 			
-			<div class="alert alert-info" role="alert" id='msg_wait' style='display:none'>Please wait while installing............</div>
+			<div class="alert alert-info" role="alert" id='msg_wait' style='display:none'>Please wait while installing............about 15 minutes</div>
 			<div class="alert alert-danger" role="alert" id='msg_error' style='display:none'>installation failed............</div>
 			<div class="alert alert-success" role="alert" id='msg_success' style='display:none'>installation success click next button.</div>
 			<button type="button" class="btn btn-info"  style='display:none' id='button_next' onclick="window.location.href='/install/step4'">Next</button>
@@ -46,6 +46,9 @@ $(document).ready(function() {
 		        
 		        },
 		        error : function(resultat, statut, erreur){
+		        	console.log(resultat);
+		        	console.log(statut);
+		        	console.log(erreur);
 			    	$('#msg_wait').attr("style","display:none");
 		        	$('#msg_error').attr("style","display:block");
 		        }
@@ -73,6 +76,9 @@ $(document).ready(function() {
 		        error : function(resultat, statut, erreur){
 		        	$('#msg_wait').attr("style","display:none");
 		        	$('#msg_error').attr("style","display:block");
+		        	console.log(resultat);
+		        	console.log(statut);
+		        	console.log(erreur);
 
 		        }
 		  })
@@ -98,8 +104,11 @@ $(document).ready(function() {
 		
 			        },
 			        error : function(resultat, statut, erreur){
-			        	$('#msg_wait').attr("style","display:none");
-			        	$('#msg_error').attr("style","display:block");
+			        	//$('#msg_wait').attr("style","display:none");
+			        	//$('#msg_error').attr("style","display:block");
+			        	console.log(resultat);
+			        	console.log(statut);
+			        	console.log(erreur);
 		
 			        }
 			  })

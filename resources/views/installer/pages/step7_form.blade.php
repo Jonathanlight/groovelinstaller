@@ -13,7 +13,9 @@
 @endif
 <div class="container-fluid" style='margin-top:50px'>
 	<div class="row">
-		<div class="alert alert-success" role="alert" id='msg_success' style='display:block'>install is finished!</div>
+		<div class="alert alert-success" role="alert" id='msg_success' style='display:block'>install is finished! you must go inside your app and launch command
+		php artisan generate:key to generate a specific key that will become your identity code
+		</div>
 	</div>
 	<div class="col-sm-4 col-sm-offset-4 main">
 		<div class="alert alert-info" role="alert">Now you can change your virtual host to redirect in your groovel install</div>

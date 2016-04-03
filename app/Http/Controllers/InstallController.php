@@ -161,7 +161,13 @@ class InstallController extends Controller
 		$this->copy_directory($tmp_dir.'/'.$projectName.'/vendor/groovel/cmsgroovel/starter-templates',$tmp_dir.'/'.$projectName.'/starter-templates');
 		//blog demo
 		$blog_dir=$tmp_dir.'/'.$projectName.'/resources/views/blog';
-		mkdir($blog_dir, 0777,true);
+		$blog_style=$tmp_dir.'/'.$projectName.'/public/blog';
+		if (!file_exists($blog_dir)) {
+			mkdir($blog_dir, 0777,true);
+		}
+		if (!file_exists($blog_style)) {
+			mkdir($blog_style, 0777,true);
+		}
 		$this->copy_directory($tmp_dir.'/'.$projectName.'/starter-templates/layouts/blog/pages',$tmp_dir.'/'.$projectName.'/resources/views/blog/pages');
 		$this->copy_directory($tmp_dir.'/'.$projectName.'/starter-templates/layouts/blog/includes',$tmp_dir.'/'.$projectName.'/resources/views/blog/includes');
 		$this->copy_directory($tmp_dir.'/'.$projectName.'/starter-templates/layouts/blog/base',$tmp_dir.'/'.$projectName.'/resources/views/blog/base');
