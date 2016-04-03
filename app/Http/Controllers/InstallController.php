@@ -1,20 +1,5 @@
 <?php
 
-/**********************************************************************/
-/*This file is part of Groovel.                                       */
-/*Groovel is free software: you can redistribute it and/or modify     */
-/*it under the terms of the GNU General Public License as published by*/
-/*the Free Software Foundation, either version 2 of the License, or   */
-/*(at your option) any later version.                                 */
-/*Groovel is distributed in the hope that it will be useful,          */
-/*but WITHOUT ANY WARRANTY; without even the implied warranty of      */
-/*MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the       */
-/*GNU General Public License for more details.                        */
-/*You should have received a copy of the GNU General Public License   */
-/*along with Groovel.  If not, see <http://www.gnu.org/licenses/>.    */
-/**********************************************************************/
-
-
 namespace App\Http\Controllers;
 
 use Log;
@@ -174,6 +159,13 @@ class InstallController extends Controller
 		$this->copy_directory($tmp_dir.'/'.$projectName.'/vendor/groovel/cmsgroovel/public/groovel',$tmp_dir.'/'.$projectName.'/public/groovel');
 		$this->copy_directory($tmp_dir.'/'.$projectName.'/vendor/groovel/cmsgroovel/public/images',$tmp_dir.'/'.$projectName.'/public/images');
 		$this->copy_directory($tmp_dir.'/'.$projectName.'/vendor/groovel/cmsgroovel/starter-templates',$tmp_dir.'/'.$projectName.'/starter-templates');
+		//blog demo
+		$blog_dir=$tmp_dir.'/'.$projectName.'/resources/views/blog';
+		mkdir($blog_dir, 0777,true);
+		$this->copy_directory($tmp_dir.'/'.$projectName.'/starter-templates/layouts/blog/pages',$tmp_dir.'/'.$projectName.'/resources/views/blog/pages');
+		$this->copy_directory($tmp_dir.'/'.$projectName.'/starter-templates/layouts/blog/includes',$tmp_dir.'/'.$projectName.'/resources/views/blog/includes');
+		$this->copy_directory($tmp_dir.'/'.$projectName.'/starter-templates/layouts/blog/base',$tmp_dir.'/'.$projectName.'/resources/views/blog/base');
+		$this->copy_directory($tmp_dir.'/'.$projectName.'/starter-templates/layouts/blog/styles',$tmp_dir.'/'.$projectName.'/public/blog/styles');
 		Log::info("publish done");
 	}
 	
