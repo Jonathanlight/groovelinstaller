@@ -127,11 +127,17 @@ class InstallController extends Controller
 		if($request->is('install/step8')){//finalize install make a publish and copy to the destination directory web apps
 			$this->publish(Cache::get("projectname"));
 			$this->copyProjectToWebApp(Cache::get("pathinstall"),Cache::get("projectname"));
+			$this->generateKey(Cache::get("pathinstall"),Cache::get("projectname"));
 			return view('installer.pages.step7_form');
 		}
 		
 	}
 	
+	
+	private function generateKey($pathinstall,$projectname){
+		chdir($pathinstall.'/'.$projectname);
+		Artisan::call('key:generate');
+	}
 	
 	private function checkPathProjectExist($folder){
 		// Get canonicalized absolute pathname
