@@ -11769,15 +11769,16 @@ CREATE TABLE IF NOT EXISTS `system_configuration` (
   `enable_elasticsearch` tinyint(1) NOT NULL,
   `enable_maintenance` tinyint(1) NOT NULL,
   `enable_email` tinyint(1) NOT NULL,
-  `enable_user_activation` tinyint(1) NOT NULL
+  `enable_user_activation` tinyint(1) NOT NULL,
+   `maxNumberContents` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Contenu de la table `system_configuration`
 --
 
-INSERT INTO `system_configuration` (`id`, `enable_user_tracking`, `enable_map_location`, `enable_elasticsearch`, `enable_maintenance`, `enable_email`, `enable_user_activation`) VALUES
-(0, 0, 1, 0, 0, 0, 1);
+INSERT INTO `system_configuration` (`id`, `enable_user_tracking`, `enable_map_location`, `enable_elasticsearch`, `enable_maintenance`, `enable_email`, `enable_user_activation`, `maxNumberContents`) VALUES
+(0, 0, 1, 0, 0, 0, 1,100);
 
 -- --------------------------------------------------------
 
