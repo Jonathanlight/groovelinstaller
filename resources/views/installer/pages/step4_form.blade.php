@@ -1,16 +1,6 @@
 @extends('installer.base.installer_base_step4')
 @section('content')
-@if(! empty($errors)) 
-	@if (count($errors) > 0)
-	    <div class="alert alert-danger">
-	        <ul>
-	            @foreach ($errors->all() as $error)
-	                <li>{{ $error }}</li>
-	            @endforeach
-	        </ul>
-	    </div>
-	@endif
-@endif
+<div class="alert alert-danger" style='display:none' id='error'></div>
 <div class="container-fluid" style='margin-top:50px'>
 <h3 class='col-md-offset-2'>mysql settings</h3>
 	<div class="row">
@@ -51,11 +41,22 @@ $("#submitForm").click(function (event) {
 	$('#msg_wait').attr('style','display:block');
 	var form=$('#formdb').serialize();
 	$.post('/install/step5', form, function (data, textStatus) {
+		$('#error').attr('style','display:none');
+		$('#error').empty();
 			if(data['status']=='success'){
 				$('#msg_wait').attr('style','display:none');
 				$('#msg_success').attr('style','display:block');
+				$('#error').attr('style','display:none');
+				$('#error').empty();
 				window.location.href="/install/step6";
+			}else if(data['statusval']=='failed'){
+				$('#error').empty();
+				$('#error').append(data['errors']);
+				$('#error').attr('style','display:block');
+				$('#msg_wait').attr('style','display:none');
 			}else{
+				$('#error').attr('style','display:none');
+				$('#error').empty();
 				$('#msg_wait').attr('style','display:none');
 				$('#msg_error').attr('style','display:block');
 			}
