@@ -449,6 +449,10 @@ class InstallController extends Controller
 		if (!copy( base_path().'/configinstall/'.'auth.php', $tmpdir.'/'.$projectName.'/config/'.'auth.php')) {
 			Log::error("file copy failed  to update auth.php");
 		}
+		
+		if (!copy( base_path().'/configinstall/'.'Kernel.php', $tmpdir.'/'.$projectName.'/config/'.'Kernel.php')) {
+			Log::error("file copy failed  to update Kernel.php");
+		}
 	}
 	
 	
