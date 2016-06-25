@@ -19,8 +19,10 @@ class InstallController extends Controller
     private static $logs_line=0;
     private static $status_install="started";
     private static $sqlfile="groovel.sql";
+	private static $base_path_config_install=null;
     
 	public function validateForm(Request $request){
+	self::$base_path_config_install=base_path();
 		if($request->is('install/step1')){
 			self::$logs_line=0;
 			self::$status_install="started";
@@ -383,6 +385,7 @@ class InstallController extends Controller
 	private function createProject($projectName,$path){
 		ini_set ('max_execution_time', 0);
 		ini_set('memory_limit', '-1');
+		$base_path_config_install=base_path();
 		$input = new ArrayInput(array('command' => 'create-project'));
 		$present_dir = explode('\\', getcwd());
 		$tmp_dir=null;
@@ -427,7 +430,7 @@ class InstallController extends Controller
 	}
 	
 	private function installGroovel($tmpdir,$projectName){
-		if (!copy( base_path().'/configinstall/'.'composer.json', $tmpdir.'/'.$projectName.'/'.'composer.json')) {
+		if (!copy(self::$base_path_config_install.'/configinstall/'.'composer.json', $tmpdir.'/'.$projectName.'/'.'composer.json')) {
 			Log::error("file copy failed  to update config json composer to download groovel");
 		}
 	}
@@ -442,15 +445,15 @@ class InstallController extends Controller
 	}
 	
 	private function modifyLaravelSettings($tmpdir,$projectName){
-		if (!copy( base_path().'/configinstall/'.'app.php', $tmpdir.'/'.$projectName.'/config/'.'app.php')) {
+		if (!copy( self::$base_path_config_install.'/configinstall/'.'app.php', $tmpdir.'/'.$projectName.'/config/'.'app.php')) {
 			Log::error("file copy failed  to update app.php");
 		}
 		
-		if (!copy( base_path().'/configinstall/'.'auth.php', $tmpdir.'/'.$projectName.'/config/'.'auth.php')) {
+		if (!copy( self::$base_path_config_install.'/configinstall/'.'auth.php', $tmpdir.'/'.$projectName.'/config/'.'auth.php')) {
 			Log::error("file copy failed  to update auth.php");
 		}
 		
-		if (!copy( base_path().'/configinstall/'.'Kernel.php', $tmpdir.'/'.$projectName.'/config/'.'Kernel.php')) {
+		if (!copy( self::$base_path_config_install.'/configinstall/'.'Kernel.php', $tmpdir.'/'.$projectName.'/config/'.'Kernel.php')) {
 			Log::error("file copy failed  to update Kernel.php");
 		}
 	}
