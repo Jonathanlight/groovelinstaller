@@ -15,7 +15,7 @@ use Artisan;
 
 class InstallController extends Controller
 {
-    private static $LARAVEL_VERSION="5.1.0";
+    private static $LARAVEL_VERSION="5.2.31";
     private static $logs_line=0;
     private static $status_install="started";
     private static $sqlfile="groovel.sql";
