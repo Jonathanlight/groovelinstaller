@@ -62,7 +62,8 @@ class InstallController extends Controller
 			Log::info('start project');
 			$this->createProject(Cache::get('projectname'),Cache::get('pathinstall'));
 			Cache::forever("status_install","finished");
-			return response()->json(['status' => 'finished']);
+			header('Content-Type: application/json');
+			return json_encode(['status' => 'finished']);
 			
 		}
 		if($request->is('install/logs/reader')){
@@ -442,6 +443,7 @@ class InstallController extends Controller
 		$app = new \Composer\Console\Application();
 		$app->setAutoExit(false);
 		$app->run($input,$output);
+		
 	}
 	
 	private function modifyLaravelSettings($tmpdir,$projectName){
