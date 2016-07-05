@@ -7,7 +7,7 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.2.31",
-		"groovel/cmsgroovel":"dev-master"
+		"groovel/cmsgroovel":"3.0.1-beta"
    },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
