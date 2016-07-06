@@ -897,6 +897,20 @@ INSERT INTO `routes_groovel` (`id`, `uri`, `name`, `controller`, `method`, `acti
 (552, 'notauthorized', 'not authorized', '', '', 'op_read', 'cmsgroovel.pages.pagenotauthorized', 'Groovel', 0, 1, '2016-06-20 15:29:08', '2016-06-20 15:29:08'),
 (555, 'admin/role/delete', 'role delete', 'Groovel\\Cmsgroovel\\Http\\Controllers\\groovel\\admin\\role_permissions\\GroovelRolePermissionsFormController', 'validateForm', 'op_delete', '', 'Groovel', 0, 1, '2016-06-23 19:58:07', '2016-06-23 19:58:07');
 
+
+
+INSERT INTO `routes_groovel` (`id`, `uri`, `name`, `controller`, `method`, `action`, `view`, `type`, `audit_tracking_url_enable`, `activate_route`, `updated_at`, `created_at`) VALUES
+(557, 'api/authenticate', 'api authentificate login', 'Groovel\\Restapi\\Http\\Controllers\\api\\auth\\AuthenticateController', 'authenticate', 'op_none', '', 'Groovel', 0, 1, '2016-06-29 19:27:18', '2016-06-29 19:27:18'),
+(558, 'api/getmessages', 'get all messages for a given user', 'Groovel\\Restapi\\Http\\Controllers\\api\\messages\\MessageController', 'getMessages', 'op_none', '', 'Groovel', 0, 1, '2016-06-29 21:19:11', '2016-06-29 21:19:11'),
+(559, 'api/auth/signup', 'sign up api rest', 'Groovel\\Restapi\\Http\\Controllers\\api\\auth\\AuthenticateController', 'signup', 'op_none', '', 'Groovel', 0, 1, '2016-07-02 09:37:13', '2016-07-02 09:33:32'),
+(560, 'api/auth/logout', 'logout', 'Groovel\\Restapi\\Http\\Controllers\\api\\auth\\AuthenticateController', 'logout', 'op_none', '', 'Groovel', 0, 1, '2016-07-02 10:26:05', '2016-07-02 10:26:05'),
+(561, 'api/token', 'get token', 'Groovel\\Restapi\\Http\\Controllers\\api\\auth\\AuthenticateController', 'getToken', 'op_none', '', 'Groovel', 0, 1, '2016-07-02 10:34:47', '2016-07-02 10:34:47'),
+(562, 'api/auth/authenticated_user', 'get user authenticated user', 'Groovel\\Restapi\\Http\\Controllers\\api\\auth\\AuthenticateController', 'authenticatedUser', 'op_none', '', 'Groovel', 0, 1, '2016-07-02 11:00:46', '2016-07-02 11:00:46'),
+(563, 'api/sendmessage', 'send message', 'Groovel\\Restapi\\Http\\Controllers\\api\\messages\\MessageController', 'sendMessage', 'op_none', '', 'Groovel', 0, 1, '2016-07-02 11:11:35', '2016-07-02 11:11:35');
+
+
+
+
 -- --------------------------------------------------------
 
 
